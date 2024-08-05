@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod tests {
+    use std::collections::hash_map::HashMap;
+
     trait Solution {
         fn two_sum(&self, nums: Vec<i32>, target: i32) -> Vec<i32>;
     }
@@ -20,9 +22,34 @@ mod tests {
         }
     }
 
+    struct MapSolution {}
+
+    impl Solution for MapSolution {
+        fn two_sum(&self, nums: Vec<i32>, target: i32) -> Vec<i32> {
+            let mut diff_to_index: HashMap<i32, i32> = HashMap::new();
+
+            for (index, value) in nums.iter().enumerate() {
+                println!("{}", value);
+                let diff = target - value;
+                let matching = diff_to_index.get(&diff);                
+
+                match matching {
+                    Some(&other_index) => return vec![
+                        other_index,
+                        index.try_into().unwrap(),
+                    ],
+                    None => diff_to_index.insert(*value, index.try_into().unwrap()),
+                };
+            }
+
+            panic!("No Solution");
+        }
+    }
+
     fn create_solutions_for_test() -> Vec<Box<dyn Solution>> {
        vec![
             Box::new(BruteForceSolution {}),
+            Box::new(MapSolution {}),
        ] 
     }
 
