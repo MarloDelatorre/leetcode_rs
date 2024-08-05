@@ -29,16 +29,15 @@ mod tests {
             let mut diff_to_index: HashMap<i32, i32> = HashMap::new();
 
             for (index, value) in nums.iter().enumerate() {
-                println!("{}", value);
                 let diff = target - value;
                 let matching = diff_to_index.get(&diff);                
 
                 match matching {
                     Some(&other_index) => return vec![
                         other_index,
-                        index.try_into().unwrap(),
+                        index as i32,
                     ],
-                    None => diff_to_index.insert(*value, index.try_into().unwrap()),
+                    None => diff_to_index.insert(*value, index as i32),
                 };
             }
 
